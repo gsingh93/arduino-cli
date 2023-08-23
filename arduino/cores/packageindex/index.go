@@ -147,6 +147,40 @@ func (index Index) MergeIntoPackages(outPackages cores.Packages) {
 	for _, inPackage := range index.Packages {
 		inPackage.extractPackageIn(outPackages, index.IsTrusted, index.isInstalledJSON)
 	}
+
+	// calculates Incompatible PlatformRelease
+	for _, op := range outPackages {
+		for _, p := range op.Platforms {
+			for _, pr := range p.Releases {
+				platformHasIncompatibleTools := func() bool {
+					for _, td := range pr.ToolDependencies {
+						if td == nil {
+							return true
+						}
+
+						_, ok := outPackages[td.ToolPackager]
+						if !ok {
+							return true
+						}
+						tool := outPackages[td.ToolPackager].Tools[td.ToolName]
+						if tool == nil {
+							return true
+						}
+						tr := tool.Releases[td.ToolVersion.NormalizedString()]
+						if tr == nil {
+							return true
+						}
+
+						if tr.GetCompatibleFlavour() == nil {
+							return true
+						}
+					}
+					return false
+				}
+				pr.Incompatible = platformHasIncompatibleTools()
+			}
+		}
+	}
 }
 
 // IndexFromPlatformRelease creates an Index that contains a single indexPackage

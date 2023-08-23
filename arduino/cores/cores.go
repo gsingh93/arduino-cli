@@ -73,6 +73,7 @@ type PlatformRelease struct {
 	PluggableDiscoveryAware bool                          `json:"-"` // true if the Platform supports pluggable discovery (no compatibility layer required)
 	Monitors                map[string]*MonitorDependency `json:"-"`
 	MonitorsDevRecipes      map[string]string             `json:"-"`
+	Incompatible            bool                          `json:"-"` // true if at least one ToolDependencies is not available for the current OS/ARCH.
 }
 
 // BoardManifest contains information about a board. These metadata are usually
@@ -419,4 +420,10 @@ func (release *PlatformRelease) HasMetadata() bool {
 
 	installedJSONPath := release.InstallDir.Join("installed.json")
 	return installedJSONPath.Exist()
+}
+
+// IsIncompatible returns true if the PlatformRelease contains tool
+// dependencies that are not available in the current OS/ARCH.
+func (release *PlatformRelease) IsIncompatible() bool {
+	return release.Incompatible
 }
