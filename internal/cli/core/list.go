@@ -92,7 +92,7 @@ func (ir installedResult) String() string {
 		if p.Deprecated {
 			name = fmt.Sprintf("[%s] %s", tr("DEPRECATED"), name)
 		}
-		t.AddRow(p.Id, p.Installed, p.Latest, name)
+		t.AddRow(p.Id, p.Installed, p.LatestCompatible, name)
 	}
 
 	return t.Render()
