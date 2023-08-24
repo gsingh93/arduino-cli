@@ -53,6 +53,9 @@ func PlatformUpgrade(ctx context.Context, req *rpc.PlatformUpgradeRequest, downl
 	platformRelease, err := upgrade()
 	if platformRelease != nil {
 		rpcPlatform = commands.PlatformReleaseToRPC(platformRelease)
+		// An upgrade is performed only if a compatible version exists. In case of success or already at the latest
+		// compatible version, the `LatestCompatible` field will be always equal to `Latest` one.
+		rpcPlatform.LatestCompatible = rpcPlatform.Latest
 	}
 	if err != nil {
 		return &rpc.PlatformUpgradeResponse{Platform: rpcPlatform}, err
