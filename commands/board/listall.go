@@ -48,15 +48,19 @@ func ListAll(ctx context.Context, req *rpc.BoardListAllRequest) (*rpc.BoardListA
 
 			installedVersion := installedPlatformRelease.Version.String()
 
-			latestVersion := ""
+			latestVersion, latestCompatibleVersion := "", ""
 			if latestPlatformRelease := platform.GetLatestRelease(); latestPlatformRelease != nil {
 				latestVersion = latestPlatformRelease.Version.String()
+			}
+			if compatibleVersion := platform.GetLatestCompatibleRelease(); compatibleVersion != nil {
+				latestCompatibleVersion = compatibleVersion.Version.String()
 			}
 
 			rpcPlatform := &rpc.Platform{
 				Id:                platform.String(),
 				Installed:         installedVersion,
 				Latest:            latestVersion,
+				LatestCompatible:  latestCompatibleVersion,
 				Name:              platform.Name,
 				Maintainer:        platform.Package.Maintainer,
 				Website:           platform.Package.WebsiteURL,

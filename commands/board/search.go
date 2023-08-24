@@ -60,6 +60,9 @@ func Search(ctx context.Context, req *rpc.BoardSearchRequest) (*rpc.BoardSearchR
 			if latestPlatformRelease != nil {
 				rpcPlatform.Latest = latestPlatformRelease.Version.String()
 			}
+			if compatibleVersion := platform.GetLatestCompatibleRelease(); compatibleVersion != nil {
+				rpcPlatform.LatestCompatible = compatibleVersion.Version.String()
+			}
 			if installedPlatformRelease != nil {
 				rpcPlatform.Installed = installedPlatformRelease.Version.String()
 				rpcPlatform.MissingMetadata = !installedPlatformRelease.HasMetadata()

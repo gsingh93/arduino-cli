@@ -52,6 +52,9 @@ func PlatformList(req *rpc.PlatformListRequest) (*rpc.PlatformListResponse, erro
 				if platformRelease != nil {
 					rpcPlatform := commands.PlatformReleaseToRPC(platformRelease)
 					rpcPlatform.Installed = installedVersion
+					if latestCompatible := platform.GetLatestCompatibleRelease(); latestCompatible != nil {
+						rpcPlatform.LatestCompatible = latestCompatible.Version.String()
+					}
 					res = append(res, rpcPlatform)
 					continue
 				}
@@ -62,15 +65,19 @@ func PlatformList(req *rpc.PlatformListRequest) (*rpc.PlatformListResponse, erro
 				if latest == nil {
 					return nil, &arduino.PlatformNotFoundError{Platform: platform.String(), Cause: fmt.Errorf(tr("the platform has no releases"))}
 				}
+				latestCompatible := platform.GetLatestCompatibleRelease()
 
 				// show only the updatable platforms
-				if req.UpdatableOnly && latest == platformRelease {
+				if req.UpdatableOnly && (latestCompatible == nil || latestCompatible == platformRelease) {
 					continue
 				}
 
 				rpcPlatform := commands.PlatformReleaseToRPC(platformRelease)
 				rpcPlatform.Installed = platformRelease.Version.String()
 				rpcPlatform.Latest = latest.Version.String()
+				if latestCompatible := platform.GetLatestCompatibleRelease(); latestCompatible != nil {
+					rpcPlatform.LatestCompatible = latestCompatible.Version.String()
+				}
 				res = append(res, rpcPlatform)
 			}
 		}
