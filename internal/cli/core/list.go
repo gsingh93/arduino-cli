@@ -55,7 +55,10 @@ func runListCommand(args []string, all bool, updatableOnly bool) {
 // List gets and prints a list of installed platforms.
 func List(inst *rpc.Instance, all bool, updatableOnly bool) {
 	platforms := GetList(inst, all, updatableOnly)
-	feedback.PrintResult(installedResult{platforms})
+	feedback.PrintResult(installedResult{
+		platforms:     platforms,
+		updatableOnly: updatableOnly,
+	})
 }
 
 // GetList returns a list of installed platforms.
@@ -74,7 +77,8 @@ func GetList(inst *rpc.Instance, all bool, updatableOnly bool) []*rpc.Platform {
 // output from this command requires special formatting, let's create a dedicated
 // feedback.Result implementation
 type installedResult struct {
-	platforms []*rpc.Platform
+	platforms     []*rpc.Platform
+	updatableOnly bool
 }
 
 func (ir installedResult) Data() interface{} {
@@ -83,6 +87,9 @@ func (ir installedResult) Data() interface{} {
 
 func (ir installedResult) String() string {
 	if len(ir.platforms) == 0 {
+		if ir.updatableOnly {
+			return tr("All platforms are up to date.")
+		}
 		return tr("No platforms installed.")
 	}
 	t := table.New()
