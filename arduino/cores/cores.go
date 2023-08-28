@@ -228,7 +228,7 @@ func (platform *Platform) GetLatestRelease() *PlatformRelease {
 	return platform.FindReleaseWithVersion(latestVersion)
 }
 
-// GetLatestCompatibleRelease returns the latest compatible release of this platform, or nil if no 
+// GetLatestCompatibleRelease returns the latest compatible release of this platform, or nil if no
 // compatible releases are available.
 func (platform *Platform) GetLatestCompatibleRelease() *PlatformRelease {
 	latestVersion := platform.latestCompatibleReleaseVersion()
