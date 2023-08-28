@@ -19,7 +19,6 @@ import (
 	"strings"
 	"testing"
 
-	bldr "github.com/arduino/arduino-cli/arduino/builder"
 	"github.com/arduino/arduino-cli/arduino/builder/preprocessor"
 	"github.com/arduino/arduino-cli/legacy/builder"
 	paths "github.com/arduino/go-paths-helper"
@@ -34,7 +33,7 @@ func ctagsRunnerTestTemplate(t *testing.T, sketchLocation *paths.Path) []byte {
 	err := (&builder.ContainerSetupHardwareToolsLibsSketchAndProps{}).Run(ctx)
 	NoError(t, err)
 
-	_, err = bldr.PrepareSketchBuildPath(ctx.Sketch, nil, ctx.SketchBuildPath)
+	_, err = ctx.Builder.PrepareSketchBuildPath(nil, ctx.SketchBuildPath)
 	NoError(t, err)
 
 	source := loadPreprocessedSketch(t, ctx)
