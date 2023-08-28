@@ -1083,3 +1083,64 @@ func TestCoreListWhenNoPlatformAreInstalled(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, "No platforms installed.\n", string(stdout))
 }
+
+func TestCoreHavingIncompatibleDepTools(t *testing.T) {
+	env, cli := integrationtest.CreateArduinoCLIWithEnvironment(t)
+	defer env.CleanUp()
+
+	url := env.HTTPServeFile(8000, paths.New("..", "testdata", "test_index.json")).String()
+	additionalURLs := "--additional-urls=" + url
+
+	_, _, err := cli.Run("core", "update-index", additionalURLs)
+	require.NoError(t, err)
+
+	// check that list shows only compatible versions
+	stdout, _, err := cli.Run("core", "list", "--all", "--format", "json", additionalURLs)
+	require.NoError(t, err)
+	t.Log(string(stdout))
+	requirejson.Query(t, stdout, `.[] | select(.id == "foo_vendor:avr") | .latest`, `"1.0.2"`)
+	requirejson.Query(t, stdout, `.[] | select(.id == "foo_vendor:avr") | .latest_compatible`, `"1.0.1"`)
+
+	// install latest compatible version
+	_, _, err = cli.Run("core", "install", "foo_vendor:avr", additionalURLs)
+	require.NoError(t, err)
+	stdout, _, err = cli.Run("core", "list", "--all", "--format", "json", additionalURLs)
+	require.NoError(t, err)
+	requirejson.Query(t, stdout, `.[] | select(.id == "foo_vendor:avr") | .latest_compatible`, `"1.0.1"`)
+
+	// install incompatible version
+	_, stderr, err := cli.Run("core", "install", "foo_vendor:avr@1.0.2", additionalURLs)
+	require.Error(t, err)
+	require.Contains(t, string(stderr), "no versions available for the current OS")
+
+	// install compatible version
+	_, _, err = cli.Run("core", "install", "foo_vendor:avr@1.0.0", additionalURLs)
+	require.NoError(t, err)
+	stdout, _, err = cli.Run("core", "list", "--format", "json", additionalURLs)
+	require.NoError(t, err)
+	requirejson.Query(t, stdout, `.[] | select(.id == "foo_vendor:avr") | .installed`, `"1.0.0"`)
+
+	// Lists all updatable cores
+	stdout, _, err = cli.Run("core", "list", "--updatable", "--format", "json", additionalURLs)
+	require.NoError(t, err)
+	requirejson.Query(t, stdout, `.[] | select(.id == "foo_vendor:avr") | .latest_compatible`, `"1.0.1"`)
+
+	// upgrade to latest compatible (1.0.0 -> 1.0.1)
+	_, _, err = cli.Run("core", "upgrade", "foo_vendor:avr", "--format", "json", additionalURLs)
+	require.NoError(t, err)
+	stdout, _, err = cli.Run("core", "list", "--format", "json", additionalURLs)
+	require.NoError(t, err)
+	requirejson.Query(t, stdout, `.[] | select(.id == "foo_vendor:avr") | .installed`, `"1.0.1"`)
+
+	// upgrade to latest incompatible not possible (1.0.1 -> 1.0.2)
+	_, _, err = cli.Run("core", "upgrade", "foo_vendor:avr", "--format", "json", additionalURLs)
+	require.NoError(t, err)
+	stdout, _, err = cli.Run("core", "list", "--format", "json", additionalURLs)
+	require.NoError(t, err)
+	requirejson.Query(t, stdout, `.[] | select(.id == "foo_vendor:avr") | .installed`, `"1.0.1"`)
+
+	// When no compatible version are found return error
+	_, stderr, err = cli.Run("core", "install", "incompatible_vendor:avr", additionalURLs)
+	require.Error(t, err)
+	require.Contains(t, string(stderr), "has no available releases")
+}
