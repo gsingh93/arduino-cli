@@ -1142,5 +1142,5 @@ func TestCoreHavingIncompatibleDepTools(t *testing.T) {
 	// When no compatible version are found return error
 	_, stderr, err = cli.Run("core", "install", "incompatible_vendor:avr", additionalURLs)
 	require.Error(t, err)
-	require.Contains(t, string(stderr), "has no available releases")
+	require.Contains(t, string(stderr), "has no available releases for your OS")
 }
