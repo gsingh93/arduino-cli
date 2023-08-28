@@ -2,6 +2,24 @@
 
 Here you can find a list of migration guides to handle breaking changes between releases of the CLI.
 
+## 0.35.0
+
+### The gRPC `cc.arduino.cli.commands.v1.Platform` has been changed.
+
+We've added a new field called `latest_compatible`. This field indicates the latest version that can be successfully
+installed for the current OS. The `latest` field cannot guarantee such property.
+
+### `core list` now returns only the latest version that can be installed.
+
+Previously, we showed the latest version without checking if all the dependencies were available in the current OS. Now,
+the latest version will always point to an installable one even if a newer incompatible one is present.
+
+### `core upgrade` and `core install` will install the latest compatible version.
+
+Previously, we'd have tried the installation/upgrade of a core even if all the required tools weren't available in the
+current OS. Now we check this upfront, and allowing the installation of incompatible versions only if a user explicitly
+provides it like: `core install arduino:renesas_uno@1.0.2`
+
 ## 0.34.0
 
 ### The gRPC `cc.arduino.cli.commands.v1.UploadRepsonse` command response has been changed.
