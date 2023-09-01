@@ -44,7 +44,7 @@ func TestIncludesToIncludeFolders(t *testing.T) {
 		NoError(t, err)
 	}
 
-	importedLibraries := ctx.ImportedLibraries
+	importedLibraries := ctx.SketchLibrariesDetector.ImportedLibraries()
 	require.Equal(t, 1, len(importedLibraries))
 	require.Equal(t, "Bridge", importedLibraries[0].Name)
 }
@@ -67,7 +67,7 @@ func TestIncludesToIncludeFoldersSketchWithIfDef(t *testing.T) {
 		NoError(t, err)
 	}
 
-	importedLibraries := ctx.ImportedLibraries
+	importedLibraries := ctx.SketchLibrariesDetector.ImportedLibraries()
 	require.Equal(t, 0, len(importedLibraries))
 }
 
@@ -89,7 +89,7 @@ func TestIncludesToIncludeFoldersIRremoteLibrary(t *testing.T) {
 		NoError(t, err)
 	}
 
-	importedLibraries := ctx.ImportedLibraries
+	importedLibraries := ctx.SketchLibrariesDetector.ImportedLibraries()
 	sort.Sort(ByLibraryName(importedLibraries))
 	require.Equal(t, 2, len(importedLibraries))
 	require.Equal(t, "Bridge", importedLibraries[0].Name)
@@ -114,7 +114,7 @@ func TestIncludesToIncludeFoldersANewLibrary(t *testing.T) {
 		NoError(t, err)
 	}
 
-	importedLibraries := ctx.ImportedLibraries
+	importedLibraries := ctx.SketchLibrariesDetector.ImportedLibraries()
 	sort.Sort(ByLibraryName(importedLibraries))
 	require.Equal(t, 2, len(importedLibraries))
 	require.Equal(t, "ANewLibrary-master", importedLibraries[0].Name)
@@ -144,7 +144,7 @@ func TestIncludesToIncludeFoldersDuplicateLibs(t *testing.T) {
 		NoError(t, err)
 	}
 
-	importedLibraries := ctx.ImportedLibraries
+	importedLibraries := ctx.SketchLibrariesDetector.ImportedLibraries()
 	sort.Sort(ByLibraryName(importedLibraries))
 	require.Equal(t, 1, len(importedLibraries))
 	require.Equal(t, "SPI", importedLibraries[0].Name)
@@ -175,7 +175,7 @@ func TestIncludesToIncludeFoldersDuplicateLibsWithConflictingLibsOutsideOfPlatfo
 		NoError(t, err)
 	}
 
-	importedLibraries := ctx.ImportedLibraries
+	importedLibraries := ctx.SketchLibrariesDetector.ImportedLibraries()
 	sort.Sort(ByLibraryName(importedLibraries))
 	require.Equal(t, 1, len(importedLibraries))
 	require.Equal(t, "SPI", importedLibraries[0].Name)
@@ -206,7 +206,7 @@ func TestIncludesToIncludeFoldersDuplicateLibs2(t *testing.T) {
 		NoError(t, err)
 	}
 
-	importedLibraries := ctx.ImportedLibraries
+	importedLibraries := ctx.SketchLibrariesDetector.ImportedLibraries()
 	sort.Sort(ByLibraryName(importedLibraries))
 	require.Equal(t, 1, len(importedLibraries))
 	require.Equal(t, "USBHost", importedLibraries[0].Name)
@@ -232,7 +232,7 @@ func TestIncludesToIncludeFoldersSubfolders(t *testing.T) {
 		NoError(t, err)
 	}
 
-	importedLibraries := ctx.ImportedLibraries
+	importedLibraries := ctx.SketchLibrariesDetector.ImportedLibraries()
 	sort.Sort(ByLibraryName(importedLibraries))
 	require.Equal(t, 3, len(importedLibraries))
 	require.Equal(t, "testlib1", importedLibraries[0].Name)
