@@ -128,7 +128,7 @@ func prepareBuilderTestContext(t *testing.T, ctx *types.Context, sketchPath *pat
 
 	if !stepToSkip[skipLibraries] {
 		lm, libsResolver, _, err := bldr.LibrariesLoader(
-			ctx.UseCachedLibrariesResolution, ctx.LibrariesManager,
+			false, ctx.LibrariesManager,
 			ctx.BuiltInLibrariesDirs, ctx.LibraryDirs, ctx.OtherLibrariesDirs,
 			ctx.ActualPlatform, ctx.TargetPlatform,
 		)
@@ -139,7 +139,7 @@ func prepareBuilderTestContext(t *testing.T, ctx *types.Context, sketchPath *pat
 			lm, libsResolver,
 			ctx.ImportedLibraries,
 			ctx.Verbose,
-			ctx.UseCachedLibrariesResolution,
+			false,
 			func(msg string) { ctx.Info(msg) },
 			func(msg string) { ctx.Warn(msg) },
 		)
