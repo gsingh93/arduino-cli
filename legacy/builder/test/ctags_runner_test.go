@@ -20,20 +20,17 @@ import (
 	"testing"
 
 	"github.com/arduino/arduino-cli/arduino/builder/preprocessor"
-	"github.com/arduino/arduino-cli/legacy/builder"
+	"github.com/arduino/arduino-cli/legacy/builder/types"
 	paths "github.com/arduino/go-paths-helper"
 	"github.com/stretchr/testify/require"
 )
 
 func ctagsRunnerTestTemplate(t *testing.T, sketchLocation *paths.Path) []byte {
-	ctx := prepareBuilderTestContext(t, nil, sketchLocation, "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, sketchLocation, "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-	ctx.Verbose = true
 
-	err := (&builder.ContainerSetupHardwareToolsLibsSketchAndProps{}).Run(ctx)
-	NoError(t, err)
-
-	_, err = ctx.Builder.PrepareSketchBuildPath(nil, ctx.SketchBuildPath)
+	_, err := ctx.Builder.PrepareSketchBuildPath(nil, ctx.SketchBuildPath)
 	NoError(t, err)
 
 	source := loadPreprocessedSketch(t, ctx)

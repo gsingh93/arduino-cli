@@ -37,15 +37,12 @@ func loadPreprocessedSketch(t *testing.T, ctx *types.Context) string {
 func TestPrototypesAdderBridgeExample(t *testing.T) {
 	sketchLocation := paths.New("downloaded_libraries", "Bridge", "examples", "Bridge", "Bridge.ino")
 	quotedSketchLocation := cpp.QuoteString(Abs(t, sketchLocation).String())
-
-	ctx := prepareBuilderTestContext(t, nil, sketchLocation, "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, sketchLocation, "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -64,14 +61,12 @@ func TestPrototypesAdderBridgeExample(t *testing.T) {
 }
 
 func TestPrototypesAdderSketchWithIfDef(t *testing.T) {
-	ctx := prepareBuilderTestContext(t, nil, paths.New("SketchWithIfDef", "SketchWithIfDef.ino"), "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, paths.New("SketchWithIfDef", "SketchWithIfDef.ino"), "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -90,14 +85,12 @@ func TestPrototypesAdderSketchWithIfDef(t *testing.T) {
 }
 
 func TestPrototypesAdderBaladuino(t *testing.T) {
-	ctx := prepareBuilderTestContext(t, nil, paths.New("Baladuino", "Baladuino.ino"), "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, paths.New("Baladuino", "Baladuino.ino"), "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -116,14 +109,12 @@ func TestPrototypesAdderBaladuino(t *testing.T) {
 }
 
 func TestPrototypesAdderCharWithEscapedDoubleQuote(t *testing.T) {
-	ctx := prepareBuilderTestContext(t, nil, paths.New("CharWithEscapedDoubleQuote", "CharWithEscapedDoubleQuote.ino"), "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, paths.New("CharWithEscapedDoubleQuote", "CharWithEscapedDoubleQuote.ino"), "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -142,14 +133,12 @@ func TestPrototypesAdderCharWithEscapedDoubleQuote(t *testing.T) {
 }
 
 func TestPrototypesAdderIncludeBetweenMultilineComment(t *testing.T) {
-	ctx := prepareBuilderTestContext(t, nil, paths.New("IncludeBetweenMultilineComment", "IncludeBetweenMultilineComment.ino"), "arduino:sam:arduino_due_x_dbg")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, paths.New("IncludeBetweenMultilineComment", "IncludeBetweenMultilineComment.ino"), "arduino:sam:arduino_due_x_dbg")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -168,14 +157,12 @@ func TestPrototypesAdderIncludeBetweenMultilineComment(t *testing.T) {
 }
 
 func TestPrototypesAdderLineContinuations(t *testing.T) {
-	ctx := prepareBuilderTestContext(t, nil, paths.New("LineContinuations", "LineContinuations.ino"), "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, paths.New("LineContinuations", "LineContinuations.ino"), "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -194,14 +181,12 @@ func TestPrototypesAdderLineContinuations(t *testing.T) {
 }
 
 func TestPrototypesAdderStringWithComment(t *testing.T) {
-	ctx := prepareBuilderTestContext(t, nil, paths.New("StringWithComment", "StringWithComment.ino"), "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, paths.New("StringWithComment", "StringWithComment.ino"), "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -220,14 +205,12 @@ func TestPrototypesAdderStringWithComment(t *testing.T) {
 }
 
 func TestPrototypesAdderSketchWithStruct(t *testing.T) {
-	ctx := prepareBuilderTestContext(t, nil, paths.New("SketchWithStruct", "SketchWithStruct.ino"), "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, paths.New("SketchWithStruct", "SketchWithStruct.ino"), "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -254,14 +237,12 @@ func TestPrototypesAdderSketchWithConfig(t *testing.T) {
 	sketchLocation := paths.New("sketch_with_config", "sketch_with_config.ino")
 	quotedSketchLocation := cpp.QuoteString(Abs(t, sketchLocation).String())
 
-	ctx := prepareBuilderTestContext(t, nil, sketchLocation, "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, sketchLocation, "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -286,14 +267,12 @@ func TestPrototypesAdderSketchNoFunctionsTwoFiles(t *testing.T) {
 	sketchLocation := paths.New("sketch_no_functions_two_files", "sketch_no_functions_two_files.ino")
 	quotedSketchLocation := cpp.QuoteString(Abs(t, sketchLocation).String())
 
-	ctx := prepareBuilderTestContext(t, nil, paths.New("sketch_no_functions_two_files", "sketch_no_functions_two_files.ino"), "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, paths.New("sketch_no_functions_two_files", "sketch_no_functions_two_files.ino"), "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -313,16 +292,14 @@ func TestPrototypesAdderSketchNoFunctionsTwoFiles(t *testing.T) {
 }
 
 func TestPrototypesAdderSketchNoFunctions(t *testing.T) {
-	ctx := prepareBuilderTestContext(t, nil, paths.New("sketch_no_functions", "sketch_no_functions.ino"), "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, paths.New("sketch_no_functions", "sketch_no_functions.ino"), "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	sketchLocation := paths.New("sketch_no_functions", "sketch_no_functions.ino")
 	quotedSketchLocation := cpp.QuoteString(Abs(t, sketchLocation).String())
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -345,14 +322,12 @@ func TestPrototypesAdderSketchWithDefaultArgs(t *testing.T) {
 	sketchLocation := paths.New("sketch_with_default_args", "sketch_with_default_args.ino")
 	quotedSketchLocation := cpp.QuoteString(Abs(t, sketchLocation).String())
 
-	ctx := prepareBuilderTestContext(t, nil, sketchLocation, "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, sketchLocation, "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -374,14 +349,12 @@ func TestPrototypesAdderSketchWithInlineFunction(t *testing.T) {
 	sketchLocation := paths.New("sketch_with_inline_function", "sketch_with_inline_function.ino")
 	quotedSketchLocation := cpp.QuoteString(Abs(t, sketchLocation).String())
 
-	ctx := prepareBuilderTestContext(t, nil, sketchLocation, "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, sketchLocation, "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -414,14 +387,12 @@ func TestPrototypesAdderSketchWithFunctionSignatureInsideIFDEF(t *testing.T) {
 	sketchLocation := paths.New("sketch_with_function_signature_inside_ifdef", "sketch_with_function_signature_inside_ifdef.ino")
 	quotedSketchLocation := cpp.QuoteString(Abs(t, sketchLocation).String())
 
-	ctx := prepareBuilderTestContext(t, nil, sketchLocation, "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, sketchLocation, "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -455,7 +426,6 @@ func TestPrototypesAdderSketchWithUSBCON(t *testing.T) {
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -488,7 +458,6 @@ func TestPrototypesAdderSketchWithTypename(t *testing.T) {
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -516,14 +485,12 @@ func TestPrototypesAdderSketchWithIfDef2(t *testing.T) {
 	sketchLocation := paths.New("sketch_with_ifdef", "sketch_with_ifdef.ino")
 	quotedSketchLocation := cpp.QuoteString(Abs(t, sketchLocation).String())
 
-	ctx := prepareBuilderTestContext(t, nil, sketchLocation, "arduino:avr:yun")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, sketchLocation, "arduino:avr:yun")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -548,14 +515,12 @@ func TestPrototypesAdderSketchWithIfDef2SAM(t *testing.T) {
 	sketchLocation := paths.New("sketch_with_ifdef", "sketch_with_ifdef.ino")
 	quotedSketchLocation := cpp.QuoteString(Abs(t, sketchLocation).String())
 
-	ctx := prepareBuilderTestContext(t, nil, sketchLocation, "arduino:sam:arduino_due_x_dbg")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, sketchLocation, "arduino:sam:arduino_due_x_dbg")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -580,14 +545,12 @@ func TestPrototypesAdderSketchWithConst(t *testing.T) {
 	sketchLocation := paths.New("sketch_with_const", "sketch_with_const.ino")
 	quotedSketchLocation := cpp.QuoteString(Abs(t, sketchLocation).String())
 
-	ctx := prepareBuilderTestContext(t, nil, sketchLocation, "arduino:avr:uno")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, sketchLocation, "arduino:avr:uno")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -606,14 +569,12 @@ func TestPrototypesAdderSketchWithConst(t *testing.T) {
 }
 
 func TestPrototypesAdderSketchWithDosEol(t *testing.T) {
-	ctx := prepareBuilderTestContext(t, nil, paths.New("eol_processing", "eol_processing.ino"), "arduino:avr:uno")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, paths.New("eol_processing", "eol_processing.ino"), "arduino:avr:uno")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -632,14 +593,12 @@ func TestPrototypesAdderSketchWithSubstringFunctionMember(t *testing.T) {
 	sketchLocation := paths.New("sketch_with_class_and_method_substring", "sketch_with_class_and_method_substring.ino")
 	quotedSketchLocation := cpp.QuoteString(Abs(t, sketchLocation).String())
 
-	ctx := prepareBuilderTestContext(t, nil, sketchLocation, "arduino:avr:uno")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, sketchLocation, "arduino:avr:uno")
 	defer cleanUpBuilderTestContext(t, ctx)
-
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err

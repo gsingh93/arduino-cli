@@ -27,13 +27,12 @@ import (
 )
 
 func TestIncludesToIncludeFolders(t *testing.T) {
-	ctx := prepareBuilderTestContext(t, nil, paths.New("downloaded_libraries", "Bridge", "examples", "Bridge", "Bridge.ino"), "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, paths.New("downloaded_libraries", "Bridge", "examples", "Bridge", "Bridge.ino"), "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -51,13 +50,12 @@ func TestIncludesToIncludeFolders(t *testing.T) {
 }
 
 func TestIncludesToIncludeFoldersSketchWithIfDef(t *testing.T) {
-	ctx := prepareBuilderTestContext(t, nil, paths.New("SketchWithIfDef", "SketchWithIfDef.ino"), "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, paths.New("SketchWithIfDef", "SketchWithIfDef.ino"), "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -74,13 +72,12 @@ func TestIncludesToIncludeFoldersSketchWithIfDef(t *testing.T) {
 }
 
 func TestIncludesToIncludeFoldersIRremoteLibrary(t *testing.T) {
-	ctx := prepareBuilderTestContext(t, nil, paths.New("sketch9", "sketch9.ino"), "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, paths.New("sketch9", "sketch9.ino"), "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -100,13 +97,12 @@ func TestIncludesToIncludeFoldersIRremoteLibrary(t *testing.T) {
 }
 
 func TestIncludesToIncludeFoldersANewLibrary(t *testing.T) {
-	ctx := prepareBuilderTestContext(t, nil, paths.New("sketch10", "sketch10.ino"), "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, paths.New("sketch10", "sketch10.ino"), "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
-	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -137,7 +133,6 @@ func TestIncludesToIncludeFoldersDuplicateLibs(t *testing.T) {
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -169,7 +164,6 @@ func TestIncludesToIncludeFoldersDuplicateLibsWithConflictingLibsOutsideOfPlatfo
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -201,7 +195,6 @@ func TestIncludesToIncludeFoldersDuplicateLibs2(t *testing.T) {
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
@@ -221,13 +214,13 @@ func TestIncludesToIncludeFoldersDuplicateLibs2(t *testing.T) {
 }
 
 func TestIncludesToIncludeFoldersSubfolders(t *testing.T) {
-	ctx := prepareBuilderTestContext(t, nil, paths.New("sketch_with_subfolders", "sketch_with_subfolders.ino"), "arduino:avr:leonardo")
+	ctx := &types.Context{Verbose: true}
+	ctx = prepareBuilderTestContext(t, ctx, paths.New("sketch_with_subfolders", "sketch_with_subfolders.ino"), "arduino:avr:leonardo")
 	defer cleanUpBuilderTestContext(t, ctx)
 	ctx.Verbose = true
 
 	var _err error
 	commands := []types.Command{
-		&builder.ContainerSetupHardwareToolsLibsSketchAndProps{},
 		types.BareCommand(func(ctx *types.Context) error {
 			ctx.LineOffset, _err = ctx.Builder.PrepareSketchBuildPath(ctx.SourceOverride, ctx.SketchBuildPath)
 			return _err
