@@ -103,7 +103,13 @@ func (sr searchResults) String() string {
 			if item.Deprecated {
 				name = fmt.Sprintf("[%s] %s", tr("DEPRECATED"), name)
 			}
-			t.AddRow(item.GetId(), item.GetLatest(), name)
+			latestVersion := item.GetLatest()
+			// We only show conpatible version when not seraching for all core
+			if !allVersions && item.Incompatible {
+				latestVersion = ""
+			}
+
+			t.AddRow(item.GetId(), latestVersion, name)
 		}
 		return t.Render()
 	}

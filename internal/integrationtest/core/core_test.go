@@ -667,7 +667,7 @@ func TestCoreSearchSortedResults(t *testing.T) {
 	require.NoError(t, err)
 
 	out := strings.Split(strings.TrimSpace(string(stdout)), "\n")
-	var lines, deprecated, notDeprecated [][]string
+	var lines, deprecated, notDeprecated, incompatibles [][]string
 	for i, v := range out {
 		if i > 0 {
 			v = strings.Join(strings.Fields(v), " ")
@@ -677,6 +677,10 @@ func TestCoreSearchSortedResults(t *testing.T) {
 	for _, v := range lines {
 		if strings.HasPrefix(v[2], "[DEPRECATED]") {
 			deprecated = append(deprecated, v)
+			continue
+		}
+		if _, err := semver.Parse(v[1]); err != nil {
+			incompatibles = append(incompatibles, v)
 		} else {
 			notDeprecated = append(notDeprecated, v)
 		}
@@ -689,9 +693,13 @@ func TestCoreSearchSortedResults(t *testing.T) {
 	require.True(t, sort.SliceIsSorted(notDeprecated, func(i, j int) bool {
 		return strings.ToLower(notDeprecated[i][2]) < strings.ToLower(notDeprecated[j][2])
 	}))
+	require.True(t, sort.SliceIsSorted(incompatibles, func(i, j int) bool {
+		return strings.ToLower(incompatibles[i][2]) < strings.ToLower(incompatibles[j][2])
+	}))
 
+	result := append(notDeprecated, incompatibles...)
 	// verify that deprecated platforms are the last ones
-	require.Equal(t, lines, append(notDeprecated, deprecated...))
+	require.Equal(t, lines, append(result, deprecated...))
 
 	// test same behaviour with json output
 	stdout, _, err = cli.Run("core", "search", "--additional-urls="+url.String(), "--format=json")
@@ -705,7 +713,7 @@ func TestCoreSearchSortedResults(t *testing.T) {
 	require.Equal(t, sortedDeprecated, notSortedDeprecated)
 
 	sortedNotDeprecated := requirejson.Parse(t, stdout).Query(
-		"[ .[] | select(.deprecated != true) | .name |=ascii_downcase | .name ] | sort").String()
+		"[ .[] | select(.deprecated != true) | .name |=ascii_downcase | {name:.name, incompatible:.incompatible} ] | sort_by(.incompatible) | [.[] | .name]").String()
 	notSortedNotDeprecated := requirejson.Parse(t, stdout).Query(
 		"[.[] | select(.deprecated != true) | .name |=ascii_downcase | .name]").String()
 	require.Equal(t, sortedNotDeprecated, notSortedNotDeprecated)
@@ -1161,4 +1169,13 @@ func TestCoreHavingIncompatibleDepTools(t *testing.T) {
 	require.NoError(t, err)
 	requirejson.Query(t, stdout, `.[] | select(.id == "foo_vendor:avr") | .latest`, `"1.0.1"`)
 	requirejson.Query(t, stdout, `.[] | select(.id == "incompatible_vendor:avr") | .incompatible`, `true`)
+
+	// In text mode, core search doesn't show any version if no compatible one are present
+	stdout, _, err = cli.Run("core", "search", additionalURLs)
+	require.NoError(t, err)
+	var lines [][]string
+	for _, v := range strings.Split(strings.TrimSpace(string(stdout)), "\n") {
+		lines = append(lines, strings.Fields(strings.TrimSpace(v)))
+	}
+	require.Contains(t, lines, []string{"incompatible_vendor:avr", "Incompatible", "Boards"})
 }

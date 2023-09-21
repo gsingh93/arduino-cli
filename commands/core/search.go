@@ -95,17 +95,24 @@ func PlatformSearch(req *rpc.PlatformSearchRequest) (*rpc.PlatformSearchResponse
 			out[i].Installed = platformRelease.Version.String()
 		}
 	}
+
 	// Sort result alphabetically and put deprecated platforms at the bottom
-	sort.Slice(
-		out, func(i, j int) bool {
-			return strings.ToLower(out[i].Name) < strings.ToLower(out[j].Name)
-		})
-	sort.SliceStable(
-		out, func(i, j int) bool {
-			if !out[i].Deprecated && out[j].Deprecated {
+	sort.Slice(out, func(i, j int) bool {
+		return strings.ToLower(out[i].Name) < strings.ToLower(out[j].Name)
+	})
+	if !req.AllVersions {
+		sort.SliceStable(out, func(i, j int) bool {
+			if !out[i].Incompatible && out[j].Incompatible {
 				return true
 			}
 			return false
 		})
+	}
+	sort.SliceStable(out, func(i, j int) bool {
+		if !out[i].Deprecated && out[j].Deprecated {
+			return true
+		}
+		return false
+	})
 	return &rpc.PlatformSearchResponse{SearchOutput: out}, nil
 }
