@@ -64,6 +64,7 @@ func PlatformReleaseToRPC(platformRelease *cores.PlatformRelease) *rpc.Platform 
 		Type:              []string{platformRelease.Platform.Category},
 		Indexed:           platformRelease.Platform.Indexed,
 		MissingMetadata:   !platformRelease.HasMetadata(),
+		Incompatible:      platformRelease.IsIncompatible(),
 	}
 
 	return result

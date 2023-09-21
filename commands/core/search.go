@@ -75,6 +75,12 @@ func PlatformSearch(req *rpc.PlatformSearchRequest) (*rpc.PlatformSearchResponse
 
 				if allVersions {
 					res = append(res, platform.GetAllReleases()...)
+					continue
+				}
+
+				// in case there isn't a compatible version fallback on the latest uncompatibile.
+				if latestCompatibleRelease := platform.GetLatestCompatibleRelease(); latestCompatibleRelease != nil {
+					res = append(res, latestCompatibleRelease)
 				} else {
 					res = append(res, latestRelease)
 				}

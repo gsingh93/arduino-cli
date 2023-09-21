@@ -181,8 +181,8 @@ func TestCoreSearchNoArgs(t *testing.T) {
 	for _, v := range strings.Split(strings.TrimSpace(string(stdout)), "\n") {
 		lines = append(lines, strings.Fields(strings.TrimSpace(v)))
 	}
-	// Check the presence of test:x86@3.0.0
-	require.Contains(t, lines, []string{"test:x86", "3.0.0", "test_core"})
+	// Check the absence of test:x86@3.0.0 because it contains incompatible deps
+	require.NotContains(t, lines, []string{"test:x86", "3.0.0", "test_core"})
 	numPlatforms = len(lines) - 1
 
 	// same thing in JSON format, also check the number of platforms found is the same
@@ -1143,4 +1143,22 @@ func TestCoreHavingIncompatibleDepTools(t *testing.T) {
 	_, stderr, err = cli.Run("core", "install", "incompatible_vendor:avr", additionalURLs)
 	require.Error(t, err)
 	require.Contains(t, string(stderr), "has no available releases for your OS")
+
+	// Core search --all shows incompatible field when a version is incompatible
+	stdout, _, err = cli.Run("core", "search", "--all", "--format", "json", additionalURLs)
+	require.NoError(t, err)
+	requirejson.Query(t, stdout,
+		`[.[] | select(.id == "foo_vendor:avr") | {latest: .latest, incompatible: .incompatible}] | sort_by(.latest)`,
+		`[
+			{"incompatible":null,"latest":"1.0.0"},
+			{"incompatible":null,"latest":"1.0.1"},
+			{"incompatible":true,"latest":"1.0.2"}
+		]`,
+	)
+
+	// Core search shows latest compatible version
+	stdout, _, err = cli.Run("core", "search", "--format", "json", additionalURLs)
+	require.NoError(t, err)
+	requirejson.Query(t, stdout, `.[] | select(.id == "foo_vendor:avr") | .latest`, `"1.0.1"`)
+	requirejson.Query(t, stdout, `.[] | select(.id == "incompatible_vendor:avr") | .incompatible`, `true`)
 }

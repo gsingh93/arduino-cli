@@ -68,6 +68,7 @@ func ListAll(ctx context.Context, req *rpc.BoardListAllRequest) (*rpc.BoardListA
 				ManuallyInstalled: platform.ManuallyInstalled,
 				Indexed:           platform.Indexed,
 				MissingMetadata:   !installedPlatformRelease.HasMetadata(),
+				Incompatible:      installedPlatformRelease.IsIncompatible(),
 			}
 
 			toTest := []string{

@@ -111,6 +111,8 @@ message Platform {
   // Newest available version of the platform containing all compatible
   // dependencies.
   string latest_compatible = 15;
+  // True if the platform contains an incompatible dependency.
+  bool incompatible = 16;
 }
 
 message InstalledPlatformReference {

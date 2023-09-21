@@ -26,7 +26,6 @@ import (
 )
 
 func TestPlatformSearch(t *testing.T) {
-
 	dataDir := paths.TempDir().Join("test", "data_dir")
 	downloadDir := paths.TempDir().Join("test", "staging")
 	t.Setenv("ARDUINO_DATA_DIR", dataDir.String())
@@ -64,6 +63,7 @@ func TestPlatformSearch(t *testing.T) {
 		Help:            &rpc.HelpResources{Online: "https://www.retrokits.com/rk002/arduino"},
 		Indexed:         true,
 		MissingMetadata: true,
+		Incompatible:    true,
 	})
 	require.Contains(t, res.SearchOutput, &rpc.Platform{
 		Id:              "Retrokits-RK002:arm",
@@ -78,6 +78,7 @@ func TestPlatformSearch(t *testing.T) {
 		Help:            &rpc.HelpResources{Online: "https://www.retrokits.com/rk002/arduino"},
 		Indexed:         true,
 		MissingMetadata: true,
+		Incompatible:    true,
 	})
 
 	res, stat = PlatformSearch(&rpc.PlatformSearchRequest{
@@ -101,6 +102,7 @@ func TestPlatformSearch(t *testing.T) {
 		Help:            &rpc.HelpResources{Online: "https://www.retrokits.com/rk002/arduino"},
 		Indexed:         true,
 		MissingMetadata: true,
+		Incompatible:    true,
 	})
 
 	// Search the Package Maintainer
@@ -125,6 +127,7 @@ func TestPlatformSearch(t *testing.T) {
 		Help:            &rpc.HelpResources{Online: "https://www.retrokits.com/rk002/arduino"},
 		Indexed:         true,
 		MissingMetadata: true,
+		Incompatible:    true,
 	})
 	require.Contains(t, res.SearchOutput, &rpc.Platform{
 		Id:              "Retrokits-RK002:arm",
@@ -139,6 +142,7 @@ func TestPlatformSearch(t *testing.T) {
 		Help:            &rpc.HelpResources{Online: "https://www.retrokits.com/rk002/arduino"},
 		Indexed:         true,
 		MissingMetadata: true,
+		Incompatible:    true,
 	})
 
 	// Search using the Package name
@@ -163,6 +167,7 @@ func TestPlatformSearch(t *testing.T) {
 		Help:            &rpc.HelpResources{Online: "https://www.retrokits.com/rk002/arduino"},
 		Indexed:         true,
 		MissingMetadata: true,
+		Incompatible:    true,
 	})
 	require.Contains(t, res.SearchOutput, &rpc.Platform{
 		Id:              "Retrokits-RK002:arm",
@@ -177,6 +182,7 @@ func TestPlatformSearch(t *testing.T) {
 		Help:            &rpc.HelpResources{Online: "https://www.retrokits.com/rk002/arduino"},
 		Indexed:         true,
 		MissingMetadata: true,
+		Incompatible:    true,
 	})
 
 	// Search using the Platform name
@@ -201,6 +207,7 @@ func TestPlatformSearch(t *testing.T) {
 		Help:            &rpc.HelpResources{Online: "https://www.retrokits.com/rk002/arduino"},
 		Indexed:         true,
 		MissingMetadata: true,
+		Incompatible:    true,
 	})
 	require.Contains(t, res.SearchOutput, &rpc.Platform{
 		Id:              "Retrokits-RK002:arm",
@@ -215,6 +222,7 @@ func TestPlatformSearch(t *testing.T) {
 		Help:            &rpc.HelpResources{Online: "https://www.retrokits.com/rk002/arduino"},
 		Indexed:         true,
 		MissingMetadata: true,
+		Incompatible:    true,
 	})
 
 	// Search using a board name
@@ -266,6 +274,7 @@ func TestPlatformSearch(t *testing.T) {
 		Help:            &rpc.HelpResources{Online: "http://www.arduino.cc/en/Reference/HomePage"},
 		Indexed:         true,
 		MissingMetadata: true,
+		Incompatible:    true,
 	})
 
 	res, stat = PlatformSearch(&rpc.PlatformSearchRequest{
@@ -316,6 +325,7 @@ func TestPlatformSearch(t *testing.T) {
 		Help:            &rpc.HelpResources{Online: "http://www.arduino.cc/en/Reference/HomePage"},
 		Indexed:         true,
 		MissingMetadata: true,
+		Incompatible:    true,
 	})
 }
 
