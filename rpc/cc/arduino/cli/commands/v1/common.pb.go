@@ -529,8 +529,8 @@ type Platform struct {
 	// If the platform is also not indexed it may fail to work correctly in some
 	// circumstances, and it may need to be re-installed.
 	MissingMetadata bool `protobuf:"varint,14,opt,name=missing_metadata,json=missingMetadata,proto3" json:"missing_metadata,omitempty"`
-	// Newest available version of the platform containing containing all
-	// compatible dependencies.
+	// Newest available version of the platform containing all compatible
+	// dependencies.
 	LatestCompatible string `protobuf:"bytes,15,opt,name=latest_compatible,json=latestCompatible,proto3" json:"latest_compatible,omitempty"`
 }
 

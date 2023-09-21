@@ -108,8 +108,8 @@ message Platform {
   // If the platform is also not indexed it may fail to work correctly in some
   // circumstances, and it may need to be re-installed.
   bool missing_metadata = 14;
-  // Newest available version of the platform containing containing all
-  // compatible dependencies.
+  // Newest available version of the platform containing all compatible
+  // dependencies.
   string latest_compatible = 15;
 }
 
