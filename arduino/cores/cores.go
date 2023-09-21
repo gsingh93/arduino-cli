@@ -231,11 +231,25 @@ func (platform *Platform) GetLatestRelease() *PlatformRelease {
 // GetLatestCompatibleRelease returns the latest compatible release of this platform, or nil if no
 // compatible releases are available.
 func (platform *Platform) GetLatestCompatibleRelease() *PlatformRelease {
-	latestVersion := platform.latestCompatibleReleaseVersion()
-	if latestVersion == nil {
+	if len(platform.Releases) == 0 {
 		return nil
 	}
-	return platform.FindReleaseWithVersion(latestVersion)
+	maximum := &PlatformRelease{Version: &semver.Version{}}
+	for _, release := range platform.Releases {
+		if release.Incompatible {
+			continue
+		}
+		if release.Version.GreaterThan(maximum.Version) {
+			maximum = release
+		}
+	}
+
+	// In case no compatible versions found return nil
+	if maximum.Version.Equal(&semver.Version{}) {
+		return nil
+	}
+
+	return maximum
 }
 
 // GetAllReleases returns all the releases of this platform, or an empty
